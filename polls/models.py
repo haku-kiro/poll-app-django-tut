@@ -13,11 +13,12 @@ class Question(models.Model):
         return self.question_text
 
     def was_published_recently(self):
-        '''
+        """
         Method to check if the question was published recently
         i.e. in the last day
-        '''
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+        """
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
