@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 # from django.http import Http404
 # from django.template import loader
 
@@ -18,13 +19,24 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """
         Return the last five published questions.
+        Not including those set to be published in the future.
         """
-        return Question.objects.order_by('-pub_date')[:5]
+
+        return Question.objects.filter(pub_date__lte=timezone.now()).\
+            order_by('-pub_date')[:5]
 
 
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+
+    # get_queryset is a member of generic.DetailView
+    # and other views
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
@@ -61,6 +73,7 @@ def results(request, question_id):
     return render(request, 'polls/results.html', {'question': q})
 
 
+# Does get used
 def vote(request, question_id):
     q = get_object_or_404(Question, pk=question_id)
     try:
