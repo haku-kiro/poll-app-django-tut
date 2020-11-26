@@ -59,10 +59,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'poll_website.urls'
 
+# DIRS is a list of filesystem directories to check when loading
+#  Django templates; it’s a search path.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
