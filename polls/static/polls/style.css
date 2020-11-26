@@ -1,0 +1,7 @@
+li a {
+    color: green;
+}
+/* Gross - I know, I just downloaded the first image I found... */
+body {
+    background: white url("images/background.gif") no-repeat;
+}
